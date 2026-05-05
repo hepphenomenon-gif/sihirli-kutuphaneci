@@ -1,1 +1,24 @@
+name: Sihirli Kütüphaneci İndeksleyici
 
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Python Kurulumu
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: İndeksleyiciyi Çalıştır
+      run: python indexer.py
+    - name: Değişiklikleri Kaydet
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'action@github.com'
+        git add indeks.json
+        git commit -m "Otomatik indeks güncellemesi" || echo "Değişiklik yok"
+        git push
