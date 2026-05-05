@@ -1,0 +1,3 @@
+# Sihirli Kütüphaneci
+
+Kütüphane taranıyor...
