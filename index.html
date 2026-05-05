@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sihirli Kütüphaneci - Antika E-Kitap</title>
+    <style>
+        :root {
+            --paper-color: #fcf8f2;
+            --text-color: #3b2f2f;
+            --accent-gold: #c5a059;
+            --leather-brown: #4a3b32;
+        }
+
+        body {
+            background-color: #eae3d2;
+            color: var(--text-color);
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .book-container {
+            width: 800px;
+            background-color: var(--paper-color);
+            padding: 60px 80px;
+            border: 12px double var(--leather-brown);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+        }
+
+        .cover {
+            text-align: center;
+            border-bottom: 2px solid var(--accent-gold);
+            padding-bottom: 40px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 48px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0 0 10px 0;
+            color: var(--leather-brown);
+        }
+
+        .subtitle {
+            font-size: 20px;
+            font-style: italic;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+        }
+
+        .meta {
+            font-size: 14px;
+            color: #705d53;
+            margin-top: 10px;
+        }
+
+        .toc {
+            background-color: #f1ebd8;
+            padding: 25px;
+            border: 1px solid var(--accent-gold);
+            border-radius: 6px;
+            margin: 30px 0;
+        }
+
+        .toc h2 {
+            color: var(--leather-brown);
+            font-size: 24px;
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 12px;
+        }
+
+        .toc a {
+            text-decoration: none;
+            color: var(--leather-brown);
+            font-weight: bold;
+        }
+
+        .toc a:hover {
+            color: var(--accent-gold);
+        }
+
+        .chapter {
+            margin-top: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px dashed #d1cbb8;
+        }
+
+        .chapter h2 {
+            color: var(--leather-brown);
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .chapter-meta {
+            font-size: 13px;
+            color: #6b584e;
+            margin-bottom: 20px;
+        }
+
+        .dropcap {
+            float: left;
+            font-size: 64px;
+            line-height: 50px;
+            padding-top: 4px;
+            padding-right: 10px;
+            color: var(--accent-gold);
+            font-family: 'Times New Roman', serif;
+            font-weight: bold;
+        }
+
+        .chapter p {
+            text-align: justify;
+            text-indent: 20px;
+            margin-top: 0;
+        }
+
+        .chapter::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="book-container">
+        <div class="cover">
+            <h1>Sihirli Kütüphaneci</h1>
+            <div class="subtitle">16. Yüzyıl Yöntemleriyle Bilgi Dünyası</div>
+            <div class="meta">Yazar: Yazar &bull; Versiyon: 1.0 &bull; Tarih: 2026</div>
+        </div>
+
+        <div class="toc">
+            <h2>İçindekiler</h2>
+            <ul>
+                <li><a href="#giris">1. Giriş: Antika Bilgeliği</a></li>
+                <li><a href="#bolum-1">2. Bölüm I: Taş Yapılar</a></li>
+                <li><a href="#bolum-2">3. Bölüm II: E-Kitap Otomasyonu</a></li>
+            </ul>
+        </div>
+
+        <div id="giris" class="chapter">
+            <h2>Giriş: Antika Bilgeliği</h2>
+            <div class="chapter-meta">250 kelime | Yaklaşık 2 dakika okuma süresi</div>
+            <div>
+                <span class="dropcap">G</span><p>eçmişten günümüze uzanan bilgelik, doğru işlendiğinde geleceğin haritasını oluşturur. Bu dijital el yazması, 16. yüzyılın ruhunu yansıtan zarafetle, modern zamanın araçlarını bir araya getirmek için tasarlandı. Kütüphaneci, yalnızca metinleri dizmekle kalmaz; aynı zamanda her bir harfin içindeki estetiği korur.</p>
+            </div>
+        </div>
+
+        <div id="bolum-1" class="chapter">
+            <h2>Bölüm I: Taş Yapılar</h2>
+            <div class="chapter-meta">400 kelime | Yaklaşık 2 dakika okuma süresi</div>
+            <div>
+                <span class="dropcap">M</span><p>imari ve doğal yapılar, dönemin estetik anlayışını yansıtır. Doğal taş duvarlar ve gambrel çatılar, sadece bir barınak değil, aynı zamanda sağlamlığın ve zarafetin birleşimidir. İndeksleme sistemi de tıpkı bu yapılar gibi birbirine kenetlenmiş parçalardan oluşur.</p>
+            </div>
+        </div>
+
+        <div id="bolum-2" class="chapter">
+            <h2>Bölüm II: E-Kitap Otomasyonu</h2>
+            <div class="chapter-meta">350 kelime | Yaklaşık 2 dakika okuma süresi</div>
+            <div>
+                <span class="dropcap">K</span><p>odunuz ve metinleriniz her zaman senkronize çalışır. "Push" işlemi sonrasında, arka plandaki işlemler saniyeler içinde kitabınızı derler, sayfa sayısını optimize eder ve okuyucuya kusursuz bir deneyim sunar.</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
