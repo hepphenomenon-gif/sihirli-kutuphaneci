@@ -1,4 +1,4 @@
-name: Sihirli Kütüphaneci İndeksleyici
+name: Sihirli Kütüphaneci İndeksleyici ve Derleyici
 
 on:
   push:
@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v4
     
@@ -18,10 +20,13 @@ jobs:
     - name: İndeksleyiciyi Çalıştır
       run: python indexer.py
       
+    - name: E-Kitap Derleyiciyi Çalıştır
+      run: python builder.py
+      
     - name: Değişiklikleri Kaydet
       run: |
         git config --global user.name 'github-actions'
         git config --global user.email 'action@github.com'
-        git add indeks.json
-        git commit -m "Otomatik deneme indeksi güncellemesi" || echo "Değişiklik yok"
+        git add indeks.json E-KITAP.md
+        git commit -m "Otomatik indeks ve E-Kitap güncellendi" || echo "Değişiklik yok"
         git push
