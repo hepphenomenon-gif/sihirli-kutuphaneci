@@ -27,6 +27,7 @@ class MagicLibrarian:
     def run(self):
         print("📜 Kütüphaneci antik rafları tarıyor...")
         
+        # Klasör yoksa oluştur
         if not os.path.exists(self.data_dir):
             os.makedirs(self.data_dir)
 
