@@ -1,93 +1,26 @@
-import json
-import os
-import math
-from datetime import datetime
+name: Magic E-Book Builder
 
-class MagicLibrarian:
-    def __init__(self):
-        self.data_dir = "denemelerim"
-        self.output_file = "SIHIRLI_KITAP.md"
-        self.meta_file = "kitap-meta.json"
-        self.index_file = "indeks.json"
+on:
+  push:
+    branches: [ "main" ]
 
-    def calculate_read_time(self, text):
-        words = len(text.split())
-        minutes = math.ceil(words / 200) # Dakikada 200 kelime okuma hızı
-        return minutes, words
-
-    def get_meta(self):
-        if os.path.exists(self.meta_file):
-            with open(self.meta_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        return {"kitap_adi": "Sihirli Kütüphaneci", "yazar": "Yazar", "versiyon": "1.0"}
-
-    def run(self):
-        print("📜 Kütüphaneci antik rafları tarıyor...")
-        
-        if not os.path.exists(self.data_dir):
-            os.makedirs(self.data_dir)
-
-        # Klasörde hiç txt yoksa örnek bir tane oluşturalım
-        if not os.listdir(self.data_dir):
-            with open(os.path.join(self.data_dir, "girizgah.txt"), "w", encoding="utf-8") as f:
-                f.write("Bu, kütüphanenizin girizgah sayfasıdır. İçeriğinizi buraya yazabilirsiniz.")
-
-        files = sorted([f for f in os.listdir(self.data_dir) if f.endswith(".txt")])
-        meta = self.get_meta()
-        full_index = {}
-
-        # Markdown Kitap Başlığı
-        book_content = f"# {meta['kitap_adi']}\n\n"
-        book_content += f"**Yazan:** {meta['yazar']}  \n"
-        book_content += f"**Oluşturulma Tarihi:** {datetime.now().strftime('%d.%m.%Y')}  \n"
-        book_content += f"**Versiyon:** {meta['versiyon']}\n\n"
-        book_content += "---\n\n"
-        
-        # İçindekiler Tablosu
-        book_content += "## İçindekiler\n\n"
-
-        chapter_bodies = ""
-        for f_name in files:
-            path = os.path.join(self.data_dir, f_name)
-            with open(path, 'r', encoding='utf-8') as f:
-                text = f.read().strip()
-                if not text: 
-                    continue
-                
-                m, w = self.calculate_read_time(text)
-                
-                # Dosya adını temizleme işlemi
-                clean_name = f_name.replace(".txt", "")
-                
-                # Türkçe karakterleri düzenleyerek başlık oluşturma
-                title = clean_name.replace("-", " ").title()
-                
-                # Çapa (anchor) için boşlukları çizgiyle değiştirme
-                anchor = clean_name.replace(" ", "-")
-                
-                full_index[title] = {"dosya": f_name, "kelime": w, "sure": m}
-                
-                # İçindekiler listesi
-                book_content += f"- [{title}](#{anchor}) *({m} dakika okuma)*\n"
-                
-                # Bölüm içeriğini ekleme
-                chapter_bodies += f"\n\n---\n\n"
-                chapter_bodies += f"<a id='{anchor}'></a>\n"
-                chapter_bodies += f"## {title}\n\n"
-                chapter_bodies += f"*{w} kelime | Yaklaşık {m} dakika okuma süresi*\n\n"
-                chapter_bodies += f"{text}\n"
-
-        book_content += "\n" + chapter_bodies
-
-        # Çıktıları kaydet
-        with open(self.output_file, 'w', encoding='utf-8') as f:
-            f.write(book_content)
-        
-        with open(self.index_file, 'w', encoding='utf-8') as f:
-            json.dump(full_index, f, ensure_ascii=False, indent=4)
-
-        print(f"✅ Üretim Tamamlandı! {self.output_file} hazır.")
-
-if __name__ == "__main__":
-    Librarian = MagicLibrarian()
-    Librarian.run()
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Run Magic Librarian
+      run: python magic_librarian.py
+    - name: Deploy to GitHub
+      run: |
+        git config --global user.name 'github-actions'
+        git config --global user.email 'action@github.com'
+        git add indeks.json SIHIRLI_KITAP.md
+        git commit -m "📜 Otomatik derleme: $(date +'%Y-%m-%d %H:%M:%S')" || echo "Değişiklik yok"
+        git push origin main || echo "Push işlemi zaten güncel"
