@@ -6,87 +6,80 @@ from datetime import datetime
 class MagicLibrarian:
     def __init__(self):
         self.data_dir = "denemelerim"
-        self.output_file = "SIHIRLI_KITAP.html"
+        self.output_file = "SIHIRLI_KITAP.md"
         self.meta_file = "kitap-meta.json"
         self.index_file = "indeks.json"
-        self.chapters = []
 
     def calculate_read_time(self, text):
         words = len(text.split())
-        minutes = math.ceil(words / 200) # Dakikada 200 kelime hızıyla
+        minutes = math.ceil(words / 200) # Dakikada 200 kelime okuma hızı
         return minutes, words
 
     def get_meta(self):
         if os.path.exists(self.meta_file):
-            with open(self.meta_file, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        return {"kitap_adi": "Sihirli Kitap", "yazar": "Anonim"}
+            try:
+                with open(self.meta_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception:
+                pass
+        return {"kitap_adi": "Sihirli Kütüphaneci", "yazar": "Yazar", "versiyon": "1.0", "dil": "tr"}
 
     def run(self):
         print("📜 Kütüphaneci antik rafları tarıyor...")
-        meta = self.get_meta()
         
+        # Klasör yoksa oluştur
         if not os.path.exists(self.data_dir):
             os.makedirs(self.data_dir)
 
-        # Dosyaları oku ve analiz et
+        # SIHIRLI_KITAP.md dosyası yoksa güvenli bir şekilde oluştur
+        if not os.path.exists(self.output_file):
+            with open(self.output_file, 'w', encoding='utf-8') as f:
+                f.write("# Sihirli Kütüphaneci\n\nBaşlangıç aşamasında.")
+
+        # Klasörde hiç txt yoksa örnek bir tane oluşturalım
+        if not os.listdir(self.data_dir):
+            with open(os.path.join(self.data_dir, "girizgah.txt"), "w", encoding="utf-8") as f:
+                f.write("Bu, kütüphanenizin girizgah sayfasıdır. İçeriğinizi buraya yazabilirsiniz.")
+
         files = sorted([f for f in os.listdir(self.data_dir) if f.endswith(".txt")])
+        meta = self.get_meta()
         full_index = {}
 
-        book_content = f"""
-        <html>
-        <head>
-            <style>
-                body {{ background-color: #f4f1ea; font-family: 'Georgia', serif; color: #3d2b1f; padding: 50px; line-height: 1.6; }}
-                .cover {{ text-align: center; border: 10px double #d4af37; padding: 100px 20px; margin-bottom: 50px; }}
-                h1 {{ font-size: 60px; text-transform: uppercase; margin-bottom: 10px; }}
-                .author {{ font-size: 24px; font-style: italic; }}
-                .toc {{ background: #eee8d5; padding: 20px; border-radius: 5px; margin: 40px 0; }}
-                .chapter {{ margin-bottom: 60px; border-bottom: 1px solid #ccc; padding-bottom: 30px; }}
-                .stats {{ font-size: 14px; color: #777; }}
-                .dropcap {{ float: left; font-size: 75px; line-height: 60px; padding-top: 4px; padding-right: 8px; font-family: 'Times New Roman'; color: #d4af37; }}
-            </style>
-        </head>
-        <body>
-            <div class="cover">
-                <h1>{meta['kitap_adi']}</h1>
-                <div class="author">Yazan: {meta['yazar']}</div>
-                <p>Oluşturulma Tarihi: {datetime.now().strftime('%d.%m.%Y')}</p>
-            </div>
-            <div class="toc"><h2>İçindekiler</h2><ul>
-        """
+        book_content = f"# {meta['kitap_adi']}\n\n"
+        book_content += f"**Yazan:** {meta['yazar']}  \n"
+        book_content += f"**Oluşturulma Tarihi:** {datetime.now().strftime('%d.%m.%Y')}  \n"
+        book_content += f"**Versiyon:** {meta['versiyon']}\n\n"
+        book_content += "---\n\n"
+        
+        book_content += "## İçindekiler\n\n"
 
         chapter_bodies = ""
         for f_name in files:
             path = os.path.join(self.data_dir, f_name)
-            with open(path, 'r', encoding='utf-8') as f:
-                text = f.read().strip()
-                if not text: continue
-                
-                m, w = self.calculate_read_time(text)
-                title = f_name.replace(".txt", "").replace("-", " ").title()
-                anchor = f_name.replace(".txt", "")
-                
-                # İndeksle
-                full_index[title] = {"dosya": f_name, "kelime": w, "sure": m}
-                
-                # İçindekilere ekle
-                book_content += f'<li><a href="#{anchor}">{title}</a> ({m} dk okuma)</li>'
-                
-                # Bölüm içeriğini hazırla
-                first_letter = text[0]
-                rest_of_text = text[1:]
-                chapter_bodies += f"""
-                <div class="chapter" id="{anchor}">
-                    <h2>{title}</h2>
-                    <div class="stats">{w} kelime | Yaklaşık {m} dakika okuma süresi</div>
-                    <p><span class="dropcap">{first_letter}</span>{rest_of_text}</p>
-                </div>
-                """
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    text = f.read().strip()
+                    if not text: 
+                        continue
+                    
+                    m, w = self.calculate_read_time(text)
+                    clean_name = f_name.replace(".txt", "")
+                    title = clean_name.replace("-", " ").title()
+                    anchor = clean_name.replace(" ", "-")
+                    
+                    full_index[title] = {"dosya": f_name, "kelime": w, "sure": m}
+                    
+                    book_content += f"- [{title}](#{anchor}) *({m} dakika okuma)*\n"
+                    chapter_bodies += f"\n\n---\n\n"
+                    chapter_bodies += f"<a id='{anchor}'></a>\n"
+                    chapter_bodies += f"## {title}\n\n"
+                    chapter_bodies += f"*{w} kelime | Yaklaşık {m} dakika okuma süresi*\n\n"
+                    chapter_bodies += f"{text}\n"
+            except Exception as e:
+                print(f"Hata: {f_name} okunamadı. Detay: {e}")
 
-        book_content += "</ul></div>" + chapter_bodies + "</body></html>"
+        book_content += "\n" + chapter_bodies
 
-        # Dosyaları kaydet
         with open(self.output_file, 'w', encoding='utf-8') as f:
             f.write(book_content)
         
