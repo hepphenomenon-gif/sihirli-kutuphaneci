@@ -1,0 +1,2 @@
+- name: E-Kitap Birleştiriciyi Çalıştır
+      run: python builder.py
