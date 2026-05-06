@@ -36,7 +36,7 @@ Senin pratiğin, bu sabitleyici refleksi askıya alan bir dikkat biçimine karş
 VI. Net Formül
 Dolayısıyla şu ifade kurulabilir: anlamın oluşum süreci yeniden görünür kılınabilir; ancak bu, teknik bir araçla değil, dikkat rejiminin dönüştürülmesiyle mümkündür.
 VII. Eşik Soru
-Bu noktada daha derin bir soru belirir: eğer anlamın oluşumu görünür hâle geliyorsa, “okuma” hâlâ aynı eylem midir? Çünkü bu eşikte okur, yazar ve metin arasındaki sınırlar sabitliğini kaybeder; yerini karşılıklı geçişlere ve ortak bir üretim alanına bırakır...
+Bu noktada daha derin bir soru belirir: eğer anlamın oluşumu görünür hâle geliyorsa, “okuma” hâlâ aynı eylem midir? Çünkü bu eşikte okur, yazar ve metin arasındaki sınırlar sabitliğini kaybeder; yerini karşılıklı geçişlere ve ortak bir üretim alanına bırakır....
 
 ---
 
