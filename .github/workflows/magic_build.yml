@@ -1,26 +1,63 @@
-name: Magic E-Book Builder
+name: Build Magic Book
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
     - uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
-    - name: Run Magic Librarian
-      run: python magic_librarian.py
-    - name: Deploy to GitHub
+    - name: Generate SIHIRLI_KITAP.md
       run: |
+        echo "# Sihirli Kütüphaneci" > SIHIRLI_KITAP.md
+        echo "" >> SIHIRLI_KITAP.md
+        echo "**Yazan:** Yazar" >> SIHIRLI_KITAP.md
+        echo "**Oluşturulma Tarihi:** $(date +'%d.%m.%Y')" >> SIHIRLI_KITAP.md
+        echo "**Versiyon:** 1.0" >> SIHIRLI_KITAP.md
+        echo "" >> SIHIRLI_KITAP.md
+        echo "---" >> SIHIRLI_KITAP.md
+        echo "" >> SIHIRLI_KITAP.md
+        echo "## İçindekiler" >> SIHIRLI_KITAP.md
+        echo "" >> SIHIRLI_KITAP.md
+
+        # İçindekiler tablosunu oluştur
+        for file in denemelerim/*.txt; do
+          if [ -f "$file" ]; then
+            name=$(basename "$file" .txt)
+            title=$(echo "$name" | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2));}1')
+            anchor=$(echo "$name" | tr ' ' '-')
+            echo "- [$title](#$anchor) *(1 dakika okuma)*" >> SIHIRLI_KITAP.md
+          fi
+        done
+
+        echo "" >> SIHIRLI_KITAP.md
+        echo "---" >> SIHIRLI_KITAP.md
+
+        # İçerikleri SIHIRLI_KITAP.md dosyasına aktar
+        for file in denemelerim/*.txt; do
+          if [ -f "$file" ]; then
+            name=$(basename "$file" .txt)
+            title=$(echo "$name" | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2));}1')
+            anchor=$(echo "$name" | tr ' ' '-')
+            
+            echo "" >> SIHIRLI_KITAP.md
+            echo "<a id='$anchor'></a>" >> SIHIRLI_KITAP.md
+            echo "## $title" >> SIHIRLI_KITAP.md
+            echo "" >> SIHIRLI_KITAP.md
+            echo "*Yaklaşık 1 dakika okuma süresi*" >> SIHIRLI_KITAP.md
+            echo "" >> SIHIRLI_KITAP.md
+            cat "$file" >> SIHIRLI_KITAP.md
+            echo "" >> SIHIRLI_KITAP.md
+          fi
+        done
+
+        # Değişiklikleri kaydet ve gönder
         git config --global user.name 'github-actions'
         git config --global user.email 'action@github.com'
-        git add indeks.json SIHIRLI_KITAP.md
+        git add SIHIRLI_KITAP.md
         git commit -m "📜 Otomatik derleme: $(date +'%Y-%m-%d %H:%M:%S')" || echo "Değişiklik yok"
         git push origin main || echo "Push işlemi zaten güncel"
