@@ -11,6 +11,7 @@
             --bg-color: #faf6f0;
             --card-bg: #ffffff;
             --text-color: #2e2b2a;
+            --border-color: #e3d5c6;
         }
 
         body {
@@ -32,7 +33,6 @@
             padding: 40px;
             border-radius: 12px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            /* Sayfa açılış animasyonu */
             animation: fadeIn 1s ease-in-out;
         }
 
@@ -48,23 +48,35 @@
             color: var(--primary);
             margin-top: 35px;
             font-size: 1.5rem;
+            border-bottom: 1px dashed var(--accent);
+            padding-bottom: 5px;
         }
 
         hr {
             border: 0;
             height: 1px;
-            background: #e3d5c6;
+            background: var(--border-color);
             margin: 20px 0;
         }
 
-        /* Dinamik efektler için geçişler */
-        .animated-section {
+        .meta {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .section-box {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #fdfaf5;
+            border-left: 4px solid var(--accent);
+            border-radius: 4px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .animated-section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(92, 64, 51, 0.08);
+        .section-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(92, 64, 51, 0.06);
         }
 
         .link-hover {
@@ -79,10 +91,17 @@
             border-bottom: 1px solid var(--accent);
         }
 
+        .reading-time {
+            font-size: 0.85rem;
+            color: #777;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(25px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -93,23 +112,41 @@
 </head>
 <body>
 
-    <div class="book-container animated-section">
+    <div class="book-container">
         <h1>Sihirli Kütüphaneci</h1>
-        <p><strong>Yazan:</strong> Yazar</p>
-        <p><strong>Oluşturulma Tarihi:</strong> 06.05.2026 | <strong>Versiyon:</strong> 1.0</p>
+        <div class="meta">
+            <strong>16. Yüzyıl Yöntemleriyle Bilgi Dünyası</strong><br>
+            <strong>Yazar:</strong> Yazar • <strong>Versiyon:</strong> 1.0 • <strong>Tarih:</strong> 2026
+        </div>
         
         <hr>
 
         <h2>İçindekiler</h2>
         <ul>
-            <li><a href="#girizgah" class="link-hover">Girizgah</a> (1 dakika okuma)</li>
+            <li><a href="#giris" class="link-hover">Giriş: Antika Bilgeliği</a></li>
+            <li><a href="#bolum-i" class="link-hover">Bölüm I: Taş Yapılar</a></li>
+            <li><a href="#bolum-ii" class="link-hover">Bölüm II: E-Kitap Otomasyonu</a></li>
         </ul>
 
         <hr>
 
-        <h2 id="girizgah">Girizgah</h2>
-        <p><em>Yaklaşık 1 dakika okuma süresi</em></p>
-        <p>Girizgah metniniz buraya gelecek...</p>
+        <div id="giris" class="section-box">
+            <h2>1. Giriş: Antika Bilgeliği</h2>
+            <div class="reading-time">250 kelime | Yaklaşık 2 dakika okuma süresi</div>
+            <p>Geçmişten günümüze uzanan bilgelik, doğru işlendiğinde geleceğin haritasını oluşturur. Bu dijital el yazması, 16. yüzyılın ruhunu yansıtan zarafetle, modern zamanın araçlarını bir araya getirmek için tasarlandı. Kütüphaneci, yalnızca metinleri dizmekle kalmaz; aynı zamanda her bir harfin içindeki estetiği korur.</p>
+        </div>
+
+        <div id="bolum-i" class="section-box">
+            <h2>2. Bölüm I: Taş Yapılar</h2>
+            <div class="reading-time">400 kelime | Yaklaşık 2 dakika okuma süresi</div>
+            <p>Mimari ve doğal yapılar, dönemin estetik anlayışını yansıtır. Doğal taş duvarlar ve gambrel çatılar, sadece bir barınak değil, aynı zamanda sağlamlığın ve zarafetin birleşimidir. İndeksleme sistemi de tıpkı bu yapılar gibi birbirine kenetlenmiş parçalardan oluşur.</p>
+        </div>
+
+        <div id="bolum-ii" class="section-box">
+            <h2>3. Bölüm II: E-Kitap Otomasyonu</h2>
+            <div class="reading-time">350 kelime | Yaklaşık 2 dakika okuma süresi</div>
+            <p>Kodunuz ve metinleriniz her zaman senkronize çalışır. "Push" işlemi sonrasında, arka plandaki işlemler saniyeler içinde kitabınızı derler, sayfa sayısını optimize eder ve okuyucuya kusursuz bir deneyim sunar.</p>
+        </div>
     </div>
 
 </body>
